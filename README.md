@@ -1,2 +1,0 @@
-# bronky
-bronky.readthedocs.io
