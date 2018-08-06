@@ -1,22 +1,11 @@
 #!/usr/bin/python3
 
-'''
-imports the necessary libraries
-'''
-# import sys
-import vex
+# imports the necessary libraries
+import sys
 import timer
-
-'''
-Initializes the Motor, Joystick, and Sensor variables.
-Each motor is connected to a port on the microcontroller.
-The port # in .Motor(#) is the port number.
-These variables are called / used by later functions.
-'''
-
+import vex
 
 # MOTORS
-__robotName__ = 'Bronky'
 _claw = vex.Motor(2)
 _forwardLeft = vex.Motor(3, True)
 _forwardRight = vex.Motor(4)
@@ -24,213 +13,124 @@ _wrist = vex.Motor(5)
 _backRight = vex.Motor(6)
 _backLeft = vex.Motor(7, True)
 
+
 # JOYSTICK
 joystick = vex.Joystick()
-joystick.set_deadband(10)
+joystick.set_deadband(15)
 
 
-def run():
-    '''
-    Runs the program
-    '''
-    driver()
-    # vex.run_autonomous(autonomous)
-    # vex.run_driver(driver)
+# VARIBALES
+# global variables
+
+AUTO_TIME = 5
+WRIST_UP_POWER = 50
+WRIST_DOWN_POWER = -(50)
+CLAW_CLOSE_POWER = 50
+CLAW_OPEN_POWER = -(50)
+CLAW_CONSTANT_CLOSE_POWER = 10
+
+
+def CLAW_DRIVE():
+    # timer variables
+    tickTimer = timer.Timer()
+    tickTimer_max = 1.3    # Seconds
+    tickTimer.start()
+    buttonTimer = timer.Timer()
+    buttonTimer_max = 1.3  # Seconds
+    buttonTimer.start()
+    clawIsOpen = False
+
+    while True:
+        # print 'TELEOP CLAW'
+        # CLAW MOTORS
+        if joystick.b8down() and buttonTimer.elapsed_time() > buttonTimer_max:
+            if not clawIsOpen:
+                clawIsOpen = True
+                # RESET TICK TIMER
+                tickTimer.start_lap()
+
+            elif clawIsOpen:
+                clawIsOpen = False
+                # RESET TICK TIMER
+                tickTimer.start_lap()
+
+            # RESET BUTTON TIMER
+            buttonTimer.start_lap()
+
+        if tickTimer.elapsed_time() < tickTimer_max:
+            if not clawIsOpen:
+                # IF CLAW IS CLOSED OPEN IT
+                _claw.run(CLAW_OPEN_POWER)
+
+            elif clawIsOpen:
+                # IF CLAW IS OPEN CLOSE IT
+                _claw.run(CLAW_CLOSE_POWER)
+
+        # CONTINIOUS POWER TO CLOSE THE CLAW
+        else:
+            if clawIsOpen:
+                # IF CLAW IS OPEN PROVIDE CONTANT POWER TO THE MOTOR
+                _claw.run(CLAW_CONSTANT_CLOSE_POWER)
+            else:
+                # TURNS OFF CLAW IF IT'S OPEN
+                _claw.off()
+
+
+def BASE_DRIVE():
+    while True:
+        # print 'TELEOP BASE'
+        # BASE MOTORS
+        # ARCADE DRIVE
+        forward = joystick.axis3()
+        steer = joystick.axis4()
+
+        # calculate left and right power
+        left = forward + steer
+        right = forward - steer
+
+        # LEFT DRIVE
+        _forwardLeft.run(left)
+        _backLeft.run(left)
+        # RIGHT DRIVE
+        _forwardRight.run(right)
+        _backRight.run(right)
+
+
+def WRIST_DRIVE():
+    while True:
+        # print 'TELEOP WRIST'
+        # WRIST MOTORS
+        if joystick.b5up():
+            _wrist.run(WRIST_DOWN_POWER)
+        elif joystick.b5down():
+            _wrist.run(WRIST_UP_POWER)
+        else:
+            _wrist.off()
 
 
 def autonomous():
-    pass
-
-
-def leftDrive(power):
-    
-    '''
-    Controls the left motors
-    Takes joystick axis as parameter
-    '''
-    _forwardLeft.run(power)
-    _backLeft.run(power)
-
-    # left_base_motor.run(joystick.axis3())
-    # motor_7.run(joystick.axis3())
-
-
-def rightDrive(power):
-    '''
-    Controls the right motors
-    Takes joystick axis as parameter
-    '''
-    _forwardRight.run(power)
-    _backRight.run(power)
-
-    # right_base_motor.run(joystick.axis2())
-    # motor_6.run(joystick.axis2())
-
-
-def tankDrive(leftAxis, rightAxis):
-    '''
-    tank drive
-    takes the left and right axis as prarameter
-    '''
-    leftDrive(leftAxis)
-    rightDrive(rightAxis)
-
-
-def arcadeDrive(forwardAxis, SteerAxis):
-    '''
-    arcade drive
-    takes the forward and steer axis as prarameter
-    '''
-    forward = forwardAxis
-    # forward = - forwardAxis
-    steer = SteerAxis
-
-    # calculate left and right power
-    left = forward + steer
-    right = forward - steer
-
-    # apply power to motors
-    leftDrive(left)
-    rightDrive(right)
-
-
-def baseRun():
-    # base left axis 3
-    # base right axis 2
-    tankDrive(joystick.axis3(), joystick.axis2())
-
-
-def wristRun():
-    # wrist b5
-    if joystick.b5up():
-        _wrist.run(-70)
-    elif joystick.b5down():
-        _wrist.run(70)
-    else:
-        _wrist.off()
-
-
-def clawRun():
-    # claw b8 ++ tick timer
-
-    # timer = 201
-    # buttonTimer = 100
-    # clawIsOpen = False
-
-    # if joystick.b8down() and buttonTimer > 100:
-    #     if clawIsOpen:
-    #         clawIsOpen = False
-    #         timer = 0
-    #     elif clawIsOpen is False:
-    #         clawIsOpen = True
-    #         timer = 0
-    #     buttonTimer = 0 
-
-    # if timer < 200:
-    #     timer += 1
-    #     if clawIsOpen:
-    #         _claw.run(-50)
-    #     elif clawIsOpen is False:
-    #         _claw.run(50)
-    # elif timer >= 200:
-    #     _claw.off()
-
-    # # applies continued closing force
-
-    # # elif timer >= 200 and clawIsOpen == False:
-    # #     claw_motor.run(-30)
-
-    # if buttonTimer <= 100:
-    #     buttonTimer += 1
-    # if timer >= 250:
-    #     timer = 0
-
-
-    # claw b8 ++ is close and is open
-    # tickTimer = timer.Timer()
-    # tickTimer_max = 2
-    # tickTimer.start()
-    # buttonTimer = timer.Timer()
-    # buttonTimer_max = 1
-    # buttonTimer.start()
-    # timer_stopping_point = 10
-    # claw = False
-    # open = True
-    # closed = False
-
-    # if joystick.b8down() and buttonTimer > buttonTimer_max:
-    #     if claw is open:
-    #         claw = closed
-    #         tickTimer.reset()
-    #     elif claw is closed:
-    #         claw = open
-    #         tickTimer.reset()
-    #     buttonTimer.reset()
-
-    # if tickTimer < tickTimer_max:
-    #     if claw is open:
-    #         _claw.run(-50)
-    #     elif claw is closed:
-    #         _claw.run(50)
-    # elif tickTimer >= tickTimer_max:
-    #     _claw.off()
-
-    # # applies continued closing force
-
-    # # elif timer >= 200 and clawIsOpen == False:
-    # #     claw_motor.run(-30)
-
-    # if tickTimer > timer_stopping_point:
-    #     tickTimer.reset()
-    # elif buttonTimer > timer_stopping_point:
-    #     buttonTimer.reset()
-
-    # claw b8 ++ timer module
-    tickTimer = timer.Timer()
-    tickTimer_max = 2
-    tickTimer.start()
-    buttonTimer = timer.Timer()
-    buttonTimer_max = 1
-    buttonTimer.start()
-    timer_stopping_point = 10
-    clawIsOpen = False
-
-    if joystick.b8down() and buttonTimer > buttonTimer_max:
-        if clawIsOpen:
-            clawIsOpen = False
-            tickTimer.reset()
-        elif clawIsOpen is False:
-            clawIsOpen = True
-            tickTimer.reset()
-        buttonTimer.reset()
-
-    if tickTimer < tickTimer_max:
-        if clawIsOpen:
-            _claw.run(-50)
-        elif clawIsOpen is False:
-            _claw.run(50)
-    elif tickTimer >= tickTimer_max:
-        _claw.off()
-
-    # # applies continued closing force
-
-    # elif timer >= 200 and clawIsOpen == False:
-    #     claw_motor.run(-30)
-
-    if tickTimer > timer_stopping_point:
-        tickTimer.reset()
-    elif buttonTimer > timer_stopping_point:
-        buttonTimer.reset()
+    import random
+    lef_choice = random.choice([-50, 50])
+    rig_choice = lef_choice * -1
+    print(rig_choice)
+    while True:
+        _backLeft.run(lef_choice)
+        _forwardLeft.run(lef_choice)
+        _backRight.run(rig_choice)
+        _forwardRight.run(rig_choice)
+        # print "AUTO", sys.clock()
+        if AUTO_TIME < sys.clock():
+            print('AUTO FINISHED')
+            break
 
 
 def driver():
-    '''
-    User defined Logic
-    '''
+    print("TELEOP running")
+    sys.run_in_thread(CLAW_DRIVE)
+    sys.run_in_thread(BASE_DRIVE)
+    sys.run_in_thread(WRIST_DRIVE)
 
-    while True:
-        baseRun()
-        wristRun()
-        clawRun()
 
-# run()
+# print(autonomous())
+autonomous()
+driver()

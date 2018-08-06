@@ -15,8 +15,10 @@
 import os
 import sys
 import sphinx_rtd_theme
+
 # sys.path.insert(0, os.path.abspath('.'))
 
+autodoc_mock_imports = ["vex", "sys", "timer"]
 
 sys.path.insert(0, os.path.abspath('../'))
 print("Module PATH: ", os.path.abspath('../'))
@@ -42,12 +44,12 @@ release = '2018.8.1'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.coverage',
+    # 'sphinx.ext.intersphinx',
+    # 'sphinx.ext.coverage',
     'sphinx.ext.imgmath',
-    'sphinx.ext.ifconfig',
+    # 'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages',
+    # 'sphinx.ext.githubpages',Fm
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -85,11 +87,12 @@ pygments_style = 'sphinx'
 #
 html_theme = 'sphinx_rtd_theme'
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
-html_theme_options = {
-   'logo_only': True,
-   'display_version': False,
-}
-html_logo = 'img/robot.png'
+# html_theme_options = {
+#    'logo_only': True,
+#    'display_version': False,
+# }
+# html_logo = 'img/robot.png'
+
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
@@ -194,5 +197,5 @@ epub_exclude_files = ['search.html']
 
 # -- Options for intersphinx extension ---------------------------------------
 
-# Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+
+
