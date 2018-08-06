@@ -7,7 +7,7 @@ Documentation for Bronky!
 =============================
 This is Documentation for the Bronky bot by the south doyle robotics team
 
- .. |docs| image:: http://readthedocs.org/projects/Bronky/badge/?version=latest&style=popout-square   :alt: Travis (.org)   :target: https://Bronky.readthedocs.io/en/latest/ 
+ .. |docs| image:: http://readthedocs.org/projects/bronky/badge/?version=latest&style=popout-square
  
 .. |Bronky| image:: https://img.shields.io/badge/Bronky-OK-brightgreen.svg 
 
