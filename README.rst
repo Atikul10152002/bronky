@@ -1,6 +1,5 @@
-
-.. |docs| image:: http://readthedocs.org/projects/bronky/badge/?version=latestt&style=popout-square
-
+.. |docs| image:: http://readthedocs.org/projects/bronky/badge/?version=latest&style=popout-square
+ 
 .. |Bronky| image:: https://img.shields.io/badge/Bronky-OK-brightgreen.svg 
 
 |docs| |Bronky|
