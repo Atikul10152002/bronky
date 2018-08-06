@@ -2,7 +2,7 @@
 Bronky/vex.py
 =================
 
-.. module:: vex
+.. automodule:: vex
 
 .. class:: Motor (self, Port#)
 
