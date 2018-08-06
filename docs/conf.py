@@ -18,10 +18,11 @@ import sphinx_rtd_theme
 
 # sys.path.insert(0, os.path.abspath('.'))
 
-autodoc_mock_imports = ["vex", "sys", "timer"]
 
 sys.path.insert(0, os.path.abspath('../'))
 print("Module PATH: ", os.path.abspath('../'))
+
+autodoc_mock_imports = ["vex", "sys", "timer"]
 
 # -- Project information -----------------------------------------------------
 

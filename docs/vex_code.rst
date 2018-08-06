@@ -25,7 +25,7 @@ Bronky/vex.py
       Parameters: -127.0...127.0 (raw power).
 
 
-.. autoclass:: Joystick
+.. class:: Joystick
    
    Config VexNet joystick
 
