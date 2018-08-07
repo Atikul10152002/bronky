@@ -87,10 +87,9 @@ def CLAW_DRIVE():
 
 def BASE_DRIVE():
     """
-    Controls the base motors -- Arcade drive
-
-    Calculates the power for the left and right drive 
-    and runs the four base motors
+| Controls the base motors -- Arcade drive
+| Calculates the power for the left and right drive 
+and runs the four base motors
     """
     while True:
         # print 'TELEOP BASE'
