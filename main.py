@@ -2,8 +2,11 @@
 
 # imports the necessary libraries
 import sys
+# THE NEXT LINE IS ONLY FOR DOCUMENTATIONS
+import fakesys as sys
 import timer
 import vex
+# import sys
 
 # MOTORS
 _claw = vex.Motor(2)
@@ -31,7 +34,13 @@ CLAW_CONSTANT_CLOSE_POWER = 10
 
 
 def CLAW_DRIVE():
-    # timer variables
+    """
+    Controls the claw motor
+
+    The fuctions acts as a togggle
+
+    When the claw is closed it applies continious power to the motor
+    """
     tickTimer = timer.Timer()
     tickTimer_max = 1.3    # Seconds
     tickTimer.start()
@@ -77,6 +86,12 @@ def CLAW_DRIVE():
 
 
 def BASE_DRIVE():
+    """
+    Controls the base motors -- Arcade drive
+
+    Calculates the power for the left and right drive 
+    and runs the four base motors
+    """
     while True:
         # print 'TELEOP BASE'
         # BASE MOTORS
@@ -97,6 +112,10 @@ def BASE_DRIVE():
 
 
 def WRIST_DRIVE():
+    """
+| Controls the wrist motors
+| Only when the buttons are pressed, the Motors receive power.
+    """
     while True:
         # print 'TELEOP WRIST'
         # WRIST MOTORS
@@ -109,6 +128,10 @@ def WRIST_DRIVE():
 
 
 def autonomous():
+    """
+| This is the autonomous period before the Teleop statsself.
+| Still in test phase --
+    """
     import random
     lef_choice = random.choice([-50, 50])
     rig_choice = lef_choice * -1
@@ -125,12 +148,17 @@ def autonomous():
 
 
 def driver():
+    """
+| This is the Teleop mode where the driver has the control over the robot.
+| The fucntion runs the claw, base and wrist in different threads
+    """
     print("TELEOP running")
     sys.run_in_thread(CLAW_DRIVE)
     sys.run_in_thread(BASE_DRIVE)
     sys.run_in_thread(WRIST_DRIVE)
 
 
-# print(autonomous())
-autonomous()
+
+# THE FOLLOWING LINE IS COMMENTED OUT FOR DOCUMENTATION
+# autonomous()
 driver()

@@ -2,8 +2,6 @@
 fake SYS
 """
 
-
-
 def clock():
     return 0
 

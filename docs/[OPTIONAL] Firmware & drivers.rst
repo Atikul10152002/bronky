@@ -1,7 +1,7 @@
 
 [OPTIONAL] Firmware & drivers
 =============================
-``All drivers and firmwares are availavle`` `here <http://www.vex.com/firmware>`_
+``All drivers and firmwares are availavle`` `here <https://www.vexrobotics.com/vexedr/products/firmware>`_
 
 - Only for Windows:
   
